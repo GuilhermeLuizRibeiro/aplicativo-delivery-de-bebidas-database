@@ -2,14 +2,13 @@
 
 Aplicativo Android de **delivery de bebidas**, desenvolvido em **Kotlin + Jetpack Compose** para a disciplina de **Desenvolvimento de Aplicativos Móveis**.
 
-Este repositório é a **segunda parte do Trabalho** da A2 e dá continuação ao Trabalho 1. Aqui o app deixou de ser só visual: ele tem **navegação real**, **listas reativas**, **cadastro/edição/remoção de itens**, **telas de detalhes** e um **carrinho** que realmente soma valores.
+Este repositório é a **terceira parte do Trabalho** da A2 e dá continuação ao Trabalho 2. Aqui o app passou a guardar os dados em um banco de dados real.
 
 ---
 
 ## Objetivos
 
-* Desenvolver uma aplicação mobile funcional, com navegação e dados que se movem de verdade;
-* Aplicar os conceitos vistos na disciplina: `NavHost`, `LazyColumn`, `Card`, `mutableStateListOf`, formulários, `ViewModel`;
+* Desenvolver uma aplicação mobile funcional, em que os dados persistem mesmo após fechar o app;
 * Documentar o processo e as decisões do trio.
 
 ---
@@ -83,23 +82,6 @@ A **barra inferior** (`NavigationBar`) leva a **Início, Carrinho, Pedidos (Rast
 
 ---
 
-## Requisitos do Trabalho 2: onde cada um foi atendido
-
-| Requisito (enunciado) | Onde está no código |
-|---|---|
-| Mínimo de 7 telas navegáveis | 10 telas em `ui/screens/` |
-| `NavHost` central + objeto `Rotas` com `const val String` | `navegacao/AppNavigation.kt` e `navegacao/rotas/Rotas.kt` |
-| `NavigationBar` funcionando | `ui/components/BarraDeNavegacaoInferior.kt` |
-| `navController.navigate(...)` em todos os botões | callbacks (`onInicio`, `onCarrinho`, `onAbrir`, `onNovo`…) ligados no `NavHost` |
-| `TopAppBar` com botão de voltar (`popBackStack()`) | `ui/components/Cabecalho.kt` (`TopBarTela` + `BotaoVoltar`), usado nas telas de lista, forms, carrinho, pagamento e rastreio |
-| 2 `data class` diferentes | `Produto` e `Categoria` (além de `ItemCarrinho`, `DadosFormProduto`, `ErrosFormProduto`, `ItemBarra`) |
-| 2 telas de lista com `LazyColumn` + `Card` + `mutableStateListOf` | `TelaListaProdutos` e `TelaListaCategorias`; as listas vivem em `LojaViewModel` |
-| **Adicionar** pela UI (`OutlinedTextField` + `Button`) | `TelaFormProduto` e `TelaFormCategoria` |
-| **Remover** / editar pela UI | ícones de lixeira e lápis em cada `Card`, com `AlertDialog` de confirmação |
-| Clicar no item abre **Detalhes** com o item certo | `produto/{id}` e `produtosPorCategoria/{id}`: o `id` vai na rota e a tela busca o item no `ViewModel` |
-
----
-
 
 
 ## Tecnologias utilizadas
@@ -108,46 +90,7 @@ A **barra inferior** (`NavigationBar`) leva a **Início, Carrinho, Pedidos (Rast
 * **IDE:** Android Studio
 * **Plataforma:** Android
 * **Interface:** Jetpack Compose (Material 3)
-* **Navegação:** Navigation Compose (`NavHost`, `NavController`)
-* **Estado:** `ViewModel` + `mutableStateListOf` / `mutableStateOf`
 
----
-
-## Estrutura do projeto
-
-```text
-app/src/main/java/com/example/myapplication/
-├── MainActivity.kt
-├── model/
-│   ├── Produto.kt
-│   ├── Categoria.kt
-│   ├── ItemCarrinho.kt
-│   ├── ItemBarra.kt
-│   ├── DadosFormProduto.kt
-│   ├── ErrosFormProduto.kt
-│   └── EstadoEtapa.kt
-├── viewmodel/
-│   └── LojaViewModel.kt          # listas reativas, validações e regras do carrinho
-├── navegacao/
-│   ├── AppNavigation.kt          # NavHost central
-│   └── rotas/
-│       └── Rotas.kt              # rotas nomeadas (const val)
-└── ui/
-    ├── components/
-    │   ├── BarraDeNavegacaoInferior.kt
-    │   └── Cabecalho.kt          # TopBarTela + BotaoVoltar
-    ├── screens/
-    │   ├── telaInicio.kt
-    │   ├── TelaLIstaProdutos.kt
-    │   ├── TelaProduto.kt        # detalhes do produto
-    │   ├── TelaFormProduto.kt
-    │   ├── TelaListaCategorias.kt
-    │   ├── TelaProdutoPorCategoria.kt  # detalhes da categoria
-    │   ├── TelaFormCategoria.kt
-    │   ├── TelaCarrinho.kt
-    │   ├── TelaPagamento.kt
-    │   └── TelaRastreio.kt
-    └── theme/
 ```
 ## Como executar
 
@@ -179,19 +122,6 @@ git clone <URL_DO_REPOSITORIO>
 5. Toque em uma categoria → veja somente os produtos dela.
 6. No **Carrinho**, altere quantidades → **Ir para pagamento** → **Confirmar pedido** → veja o **Rastreio**.
 7. Navegue por todas as abas da barra inferior e use o botão de voltar.
-
----
-
-## Limitações conhecidas
-
-Como previsto no enunciado (seção 5), os dados vivem **apenas em memória**: ao fechar o app, o que foi adicionado se perde, e a persistência fica para o próximo trabalho. Também são limitações desta versão:
-
-* O **Rastreio é estático** (pedido nº, tempo e entregador fixos); ele não reflete o pedido feito no carrinho;
-* O campo de **cupom** do carrinho e a **busca** da tela inicial ainda não têm função;
-* O **desconto** dos produtos em oferta é exibido como selo, mas **ainda não é aplicado ao preço** cobrado;
-* O **carrinho não é esvaziado** depois de confirmar o pedido;
-* O **frete** é fixo (R$ 10,99), apesar do banner de "Frete grátis acima de R$ 60";
-* Os ícones da forma de pagamento são provisórios.
 
 ---
 
